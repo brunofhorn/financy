@@ -1,19 +1,22 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Calendar, Loader2, Mail, Wallet } from "lucide-react";
+import {
+  CircleArrowDown,
+  CircleArrowUp,
+  Loader2,
+} from "lucide-react";
 import { useEffect, useMemo } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { formatCurrency, toApiDate, toDateInputValue } from "../../lib/format";
+import { toApiDate, toDateInputValue } from "../../lib/format";
 import { useCategories, useTransactionMutations } from "../../lib/hooks";
 import type { Transaction } from "../../lib/types";
-import { Field } from "../shared/field";
+import { cn } from "../../lib/utils";
 import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog";
@@ -25,7 +28,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Textarea } from "../ui/textarea";
 
 const NO_CATEGORY = "none";
 
@@ -72,7 +74,6 @@ export function TransactionDialog({
     resolver: zodResolver(transactionSchema),
     defaultValues,
   });
-  const amountPreview = useWatch({ control: form.control, name: "amount" });
 
   useEffect(() => {
     if (open) {
@@ -103,92 +104,76 @@ export function TransactionDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-[324px] gap-4 rounded-lg border-[#e2e5e9] p-5 shadow-[0_16px_40px_rgba(17,24,39,0.18)]">
         <DialogHeader>
-          <DialogTitle>
-            {isEditing ? "Editar transacao" : "Nova transacao"}
+          <DialogTitle className="text-sm font-bold text-[#111827]">
+            {isEditing ? "Editar transação" : "Nova transação"}
           </DialogTitle>
-          <DialogDescription>
-            Registre valores com categoria, data e observacoes.
+          <DialogDescription className="text-xs text-[#6b7280]">
+            Registre sua despesa ou receita
           </DialogDescription>
         </DialogHeader>
 
-        <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Field
-              label="Titulo"
-              htmlFor="transaction-title"
-              error={form.formState.errors.title?.message}
-            >
-              <Input
-                id="transaction-title"
-                icon={<Mail className="h-4 w-4" />}
-                placeholder="Ex: Salario"
-                error={Boolean(form.formState.errors.title)}
-                {...form.register("title")}
-              />
-            </Field>
+        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+          <Controller
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <div className="grid grid-cols-2 gap-3">
+                <TypeButton
+                  active={field.value === "EXPENSE"}
+                  tone="expense"
+                  onClick={() => field.onChange("EXPENSE")}
+                />
+                <TypeButton
+                  active={field.value === "INCOME"}
+                  tone="income"
+                  onClick={() => field.onChange("INCOME")}
+                />
+              </div>
+            )}
+          />
 
-            <Field
-              label="Valor"
-              htmlFor="transaction-amount"
-              error={form.formState.errors.amount?.message}
-              helper={formatCurrency(Number(amountPreview || 0))}
-            >
+          <ModalField label="Descrição" error={form.formState.errors.title?.message}>
+            <Input
+              placeholder="Ex. Almoço no restaurante"
+              error={Boolean(form.formState.errors.title)}
+              className="h-10 rounded-md border-[#d4d6da] text-sm placeholder:text-[#9ca3af]"
+              {...form.register("title")}
+            />
+          </ModalField>
+
+          <div className="grid grid-cols-2 gap-3">
+            <ModalField label="Data" error={form.formState.errors.date?.message}>
               <Input
-                id="transaction-amount"
-                icon={<Wallet className="h-4 w-4" />}
+                type="date"
+                error={Boolean(form.formState.errors.date)}
+                className="h-10 rounded-md border-[#d4d6da] text-sm text-[#6b7280]"
+                {...form.register("date")}
+              />
+            </ModalField>
+
+            <ModalField label="Valor" error={form.formState.errors.amount?.message}>
+              <Input
                 min="0"
                 step="0.01"
                 type="number"
+                placeholder="R$ 0,00"
                 error={Boolean(form.formState.errors.amount)}
+                className="h-10 rounded-md border-[#d4d6da] text-sm placeholder:text-[#111827]"
                 {...form.register("amount", { valueAsNumber: true })}
               />
-            </Field>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Controller
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <Field label="Tipo" error={form.formState.errors.type?.message}>
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="INCOME">Entrada</SelectItem>
-                      <SelectItem value="EXPENSE">Saida</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </Field>
-              )}
-            />
-
-            <Field
-              label="Data"
-              htmlFor="transaction-date"
-              error={form.formState.errors.date?.message}
-            >
-              <Input
-                id="transaction-date"
-                icon={<Calendar className="h-4 w-4" />}
-                type="date"
-                error={Boolean(form.formState.errors.date)}
-                {...form.register("date")}
-              />
-            </Field>
+            </ModalField>
           </div>
 
           <Controller
             control={form.control}
             name="categoryId"
             render={({ field }) => (
-              <Field label="Categoria">
+              <ModalField label="Categoria">
                 <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione uma categoria" />
+                  <SelectTrigger className="h-10 rounded-md border-[#d4d6da] text-sm text-[#6b7280]">
+                    <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value={NO_CATEGORY}>Sem categoria</SelectItem>
@@ -199,36 +184,70 @@ export function TransactionDialog({
                     ))}
                   </SelectContent>
                 </Select>
-              </Field>
+              </ModalField>
             )}
           />
 
-          <Field
-            label="Observacoes"
-            htmlFor="transaction-notes"
-            error={form.formState.errors.notes?.message}
+          {error ? <p className="text-xs text-feedback-danger">{error}</p> : null}
+
+          <Button
+            type="submit"
+            className="h-10 w-full rounded-md text-sm"
+            disabled={mutation.isPending}
           >
-            <Textarea
-              id="transaction-notes"
-              placeholder="Opcional"
-              error={Boolean(form.formState.errors.notes)}
-              {...form.register("notes")}
-            />
-          </Field>
-
-          {error ? <p className="text-sm text-feedback-danger">{error}</p> : null}
-
-          <DialogFooter>
-            <Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>
-              Cancelar
-            </Button>
-            <Button type="submit" disabled={mutation.isPending}>
-              {mutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-              Salvar
-            </Button>
-          </DialogFooter>
+            {mutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+            Salvar
+          </Button>
         </form>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function TypeButton({
+  active,
+  tone,
+  onClick,
+}: {
+  active: boolean;
+  tone: "expense" | "income";
+  onClick: () => void;
+}) {
+  const isExpense = tone === "expense";
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "flex h-10 items-center justify-center gap-2 rounded-md border text-sm font-semibold transition-colors",
+        active
+          ? isExpense
+            ? "border-feedback-danger bg-white text-feedback-danger"
+            : "border-brand-base bg-white text-brand-base"
+          : "border-[#e2e5e9] bg-white text-[#6b7280] hover:bg-[#f7f8fa]",
+      )}
+    >
+      {isExpense ? <CircleArrowDown className="h-4 w-4" /> : <CircleArrowUp className="h-4 w-4" />}
+      {isExpense ? "Despesa" : "Receita"}
+    </button>
+  );
+}
+
+function ModalField({
+  label,
+  error,
+  children,
+}: {
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className="block space-y-2">
+      <span className="block text-xs font-semibold text-[#374151]">{label}</span>
+      {children}
+      {error ? <span className="block text-xs text-feedback-danger">{error}</span> : null}
+    </label>
   );
 }

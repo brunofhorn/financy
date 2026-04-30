@@ -13,7 +13,7 @@ const navItems = [
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const { logout, user } = useAuth();
+  const { user } = useAuth();
   const initials = (user?.name ?? "CT")
     .split(" ")
     .filter(Boolean)
@@ -49,14 +49,13 @@ export function AppShell({ children }: { children: ReactNode }) {
           </nav>
 
           <div className="flex justify-end">
-            <button
-              type="button"
-              onClick={logout}
-              title="Sair"
+            <Link
+              to="/perfil"
+              title="Perfil"
               className="flex h-9 w-9 items-center justify-center rounded-full bg-[#e5e7eb] text-sm font-bold text-[#111827] transition-colors hover:bg-[#d1d5db]"
             >
               {initials || "CT"}
-            </button>
+            </Link>
           </div>
         </div>
 
