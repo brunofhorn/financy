@@ -10,7 +10,8 @@
     "start": "node dist/index.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "prisma:seed": "prisma db seed"
   },
   "keywords": [],
   "author": "financy",
@@ -26,6 +27,7 @@
     "graphql": "^16.13.2",
     "jsonwebtoken": "^9.0.3",
     "prisma": "^6.18.0",
+    "swagger-ui-express": "^5.0.1",
     "zod": "^4.4.1"
   },
   "devDependencies": {
@@ -34,6 +36,7 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.6.0",
+    "@types/swagger-ui-express": "^4.1.8",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3"
   }

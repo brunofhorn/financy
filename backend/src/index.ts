@@ -6,9 +6,11 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 import { expressMiddleware } from "@as-integrations/express5";
 import cors from "cors";
 import express from "express";
+import swaggerUi from "swagger-ui-express";
 
 import { createContext, type GraphQLContext } from "./context.js";
 import { resolvers, typeDefs } from "./graphql.js";
+import { swaggerSpec } from "./swagger.js";
 
 async function bootstrap() {
   const app = express();
@@ -26,6 +28,8 @@ async function bootstrap() {
     res.status(200).json({ ok: true });
   });
 
+  app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
   app.use(
     "/graphql",
     cors<cors.CorsRequest>(),
@@ -39,6 +43,7 @@ async function bootstrap() {
   await new Promise<void>((resolve) => httpServer.listen({ port }, resolve));
 
   console.log(`Servidor GraphQL iniciado em http://localhost:${port}/graphql`);
+  console.log(`Swagger UI disponivel em http://localhost:${port}/docs`);
 }
 
 bootstrap().catch((error) => {
