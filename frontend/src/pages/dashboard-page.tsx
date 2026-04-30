@@ -18,6 +18,7 @@ import {
 
 import { TransactionDialog } from "../components/dialogs/transaction-dialog";
 import { Badge } from "../components/ui/badge";
+import { getCategoryAppearance } from "../lib/category-appearance";
 import { formatCurrency, getTotals } from "../lib/format";
 import { useCategories, useTransactions } from "../lib/hooks";
 import type { Category, Transaction } from "../lib/types";
@@ -55,6 +56,14 @@ const categoryStyles = [
     iconComponent: PiggyBank,
   },
 ];
+
+type TransactionStyle = {
+  badge?: string;
+  icon?: string;
+  iconComponent: LucideIcon;
+  color?: string;
+  backgroundColor?: string;
+};
 
 export function DashboardPage() {
   const transactionsQuery = useTransactions();
@@ -128,12 +137,16 @@ export function DashboardPage() {
             <PanelMessage>Carregando categorias...</PanelMessage>
           ) : categoryRows.length ? (
             <div className="space-y-5 px-6 py-6">
-              {categoryRows.map((row, index) => {
-                const style = categoryStyles[index % categoryStyles.length];
-
+              {categoryRows.map((row) => {
                 return (
                   <div key={row.id} className="grid grid-cols-[1fr_auto_auto] items-center gap-6">
-                    <Badge className={cn("justify-center px-3 py-1.5 text-sm", style.badge)}>
+                    <Badge
+                      className="justify-center px-3 py-1.5 text-sm"
+                      style={{
+                        color: row.appearance.color,
+                        backgroundColor: row.appearance.backgroundColor,
+                      }}
+                    >
                       {row.name}
                     </Badge>
                     <span className="text-sm text-[#4b5563]">{row.count} itens</span>
@@ -220,14 +233,21 @@ function TransactionRow({
   style,
 }: {
   transaction: Transaction;
-  style: ReturnType<typeof getTransactionStyle>;
+  style: TransactionStyle;
 }) {
   const Icon = style.iconComponent;
   const isIncome = transaction.type === "INCOME";
 
   return (
     <div className="grid min-h-20 grid-cols-[40px_minmax(0,1fr)_auto_auto] items-center gap-4 px-6 py-4">
-      <div className={cn("flex h-10 w-10 items-center justify-center rounded-md", style.icon)}>
+      <div
+        className={cn("flex h-10 w-10 items-center justify-center rounded-md", style.icon)}
+        style={
+          style.color
+            ? { color: style.color, backgroundColor: style.backgroundColor }
+            : undefined
+        }
+      >
         <Icon className="h-5 w-5" />
       </div>
 
@@ -236,7 +256,14 @@ function TransactionRow({
         <p className="mt-1 text-sm text-[#4b5563]">{formatShortDate(transaction.date)}</p>
       </div>
 
-      <Badge className={cn("hidden justify-center px-3 py-1.5 text-sm sm:inline-flex", style.badge)}>
+      <Badge
+        className={cn("hidden justify-center px-3 py-1.5 text-sm sm:inline-flex", style.badge)}
+        style={
+          style.color
+            ? { color: style.color, backgroundColor: style.backgroundColor }
+            : undefined
+        }
+      >
         {isIncome ? "Receita" : transaction.category?.name ?? "Sem categoria"}
       </Badge>
 
@@ -280,7 +307,16 @@ function getCurrentMonthTotals(transactions: Transaction[]) {
 }
 
 function getCategoryRows(categories: Category[], transactions: Transaction[]) {
-  const rows = new Map<string, { id: string; name: string; count: number; total: number }>();
+  const rows = new Map<
+    string,
+    {
+      id: string;
+      name: string;
+      count: number;
+      total: number;
+      appearance: ReturnType<typeof getCategoryAppearance>;
+    }
+  >();
 
   categories.forEach((category) => {
     rows.set(category.id, {
@@ -288,6 +324,7 @@ function getCategoryRows(categories: Category[], transactions: Transaction[]) {
       name: category.name,
       count: 0,
       total: 0,
+      appearance: getCategoryAppearance(category),
     });
   });
 
@@ -306,6 +343,7 @@ function getCategoryRows(categories: Category[], transactions: Transaction[]) {
           name: category.name,
           count: 0,
           total: 0,
+          appearance: getCategoryAppearance(category),
         })
         .get(category.id);
 
@@ -324,7 +362,16 @@ function getCategoryRows(categories: Category[], transactions: Transaction[]) {
     .sort((a, b) => b.total - a.total);
 }
 
-function getTransactionStyle(transaction: Transaction, index: number) {
+function getTransactionStyle(transaction: Transaction, index: number): TransactionStyle {
+  if (transaction.category) {
+    const appearance = getCategoryAppearance(transaction.category);
+    return {
+      iconComponent: appearance.Icon,
+      color: appearance.color,
+      backgroundColor: appearance.backgroundColor,
+    };
+  }
+
   if (transaction.type === "INCOME") {
     return {
       badge: "bg-finance-green-light text-finance-green-dark",
@@ -333,16 +380,7 @@ function getTransactionStyle(transaction: Transaction, index: number) {
     };
   }
 
-  const categoryName = transaction.category?.name.toLowerCase() ?? "";
-  const categoryIndex = categoryName.includes("aliment")
-    ? 0
-    : categoryName.includes("trans")
-      ? 1
-      : categoryName.includes("merc")
-        ? 2
-        : index % categoryStyles.length;
-
-  return categoryStyles[categoryIndex];
+  return categoryStyles[index % categoryStyles.length];
 }
 
 function formatShortDate(value: string) {

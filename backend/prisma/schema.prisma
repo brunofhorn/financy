@@ -27,6 +27,8 @@ model Category {
   id           String        @id @default(cuid())
   name         String
   description  String?
+  icon         String        @default("utensils")
+  color        String        @default("#2563EB")
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String
   transactions Transaction[]

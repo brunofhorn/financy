@@ -1,22 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  BriefcaseBusiness,
-  CarFront,
-  Gift,
-  HeartPulse,
-  Home,
-  Landmark,
-  Loader2,
-  ReceiptText,
-  ShoppingCart,
-  Tags,
-  Utensils,
-  WalletCards,
-} from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import {
+  CATEGORY_COLOR_OPTIONS,
+  CATEGORY_ICON_OPTIONS,
+} from "../../lib/category-appearance";
 import { useCategoryMutations } from "../../lib/hooks";
 import type { Category } from "../../lib/types";
 import { cn } from "../../lib/utils";
@@ -29,6 +20,7 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { Input } from "../ui/input";
+import { useToast } from "../ui/toast-context";
 
 const categorySchema = z.object({
   name: z.string().trim().min(2, "Informe ao menos 2 caracteres."),
@@ -43,40 +35,17 @@ type CategoryDialogProps = {
   category?: Category | null;
 };
 
-const iconOptions = [
-  BriefcaseBusiness,
-  CarFront,
-  HeartPulse,
-  Landmark,
-  ShoppingCart,
-  Tags,
-  Gift,
-  Utensils,
-  Home,
-  WalletCards,
-  ReceiptText,
-];
-
-const colorOptions = [
-  "#1F6E43",
-  "#2563EB",
-  "#9333EA",
-  "#DB2777",
-  "#DC2626",
-  "#EA580C",
-  "#CA8A04",
-];
-
 export function CategoryDialog({
   open,
   onOpenChange,
   category,
 }: CategoryDialogProps) {
   const mutations = useCategoryMutations();
+  const toast = useToast();
   const isEditing = Boolean(category);
   const mutation = isEditing ? mutations.update : mutations.create;
-  const [selectedIcon, setSelectedIcon] = useState(0);
-  const [selectedColor, setSelectedColor] = useState(colorOptions[0]);
+  const [selectedIcon, setSelectedIcon] = useState(CATEGORY_ICON_OPTIONS[0].id);
+  const [selectedColor, setSelectedColor] = useState(CATEGORY_COLOR_OPTIONS[0]);
 
   const defaultValues = useMemo<CategoryFormData>(
     () => ({
@@ -95,11 +64,11 @@ export function CategoryDialog({
     if (open) {
       form.reset(defaultValues);
       queueMicrotask(() => {
-        setSelectedIcon(0);
-        setSelectedColor(colorOptions[0]);
+        setSelectedIcon(category?.icon ?? CATEGORY_ICON_OPTIONS[0].id);
+        setSelectedColor(category?.color ?? CATEGORY_COLOR_OPTIONS[0]);
       });
     }
-  }, [defaultValues, form, open]);
+  }, [category?.color, category?.icon, defaultValues, form, open]);
 
   const error = mutation.error instanceof Error ? mutation.error.message : undefined;
 
@@ -107,12 +76,18 @@ export function CategoryDialog({
     const input = {
       name: values.name.trim(),
       description: values.description?.trim() || null,
+      icon: selectedIcon,
+      color: selectedColor,
     };
 
     if (category) {
       await mutations.update.mutateAsync({ id: category.id, input });
     } else {
       await mutations.create.mutateAsync(input);
+      toast.success({
+        title: "Categoria cadastrada",
+        description: "A categoria foi adicionada com sucesso.",
+      });
     }
 
     onOpenChange(false);
@@ -153,14 +128,14 @@ export function CategoryDialog({
           <div className="space-y-2">
             <span className="block text-xs font-semibold text-[#374151]">Ícone</span>
             <div className="grid grid-cols-6 gap-2">
-              {iconOptions.map((Icon, index) => (
+              {CATEGORY_ICON_OPTIONS.map(({ id, icon: Icon }) => (
                 <button
-                  key={Icon.displayName ?? Icon.name}
+                  key={id}
                   type="button"
-                  onClick={() => setSelectedIcon(index)}
+                  onClick={() => setSelectedIcon(id)}
                   className={cn(
                     "flex h-8 w-8 items-center justify-center rounded-md border border-[#d4d6da] bg-white text-[#4b5563] transition-colors hover:bg-[#f7f8fa]",
-                    selectedIcon === index && "border-brand-base ring-2 ring-brand-base/20",
+                    selectedIcon === id && "border-brand-base ring-2 ring-brand-base/20",
                   )}
                 >
                   <Icon className="h-4 w-4" />
@@ -172,7 +147,7 @@ export function CategoryDialog({
           <div className="space-y-2">
             <span className="block text-xs font-semibold text-[#374151]">Cor</span>
             <div className="flex gap-2">
-              {colorOptions.map((color) => (
+              {CATEGORY_COLOR_OPTIONS.map((color) => (
                 <button
                   key={color}
                   type="button"

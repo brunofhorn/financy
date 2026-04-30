@@ -23,12 +23,16 @@ const loginInputSchema = z.object({
 const categoryCreateInputSchema = z.object({
   name: z.string().trim().min(2, "Nome deve ter ao menos 2 caracteres."),
   description: z.string().trim().max(255).optional().nullable(),
+  icon: z.string().trim().min(1).max(50).optional(),
+  color: z.string().trim().regex(/^#[0-9A-Fa-f]{6}$/).optional(),
 });
 
 const categoryUpdateInputSchema = z.object({
   id: z.string().cuid("ID da categoria inválido."),
   name: z.string().trim().min(2).optional(),
   description: z.string().trim().max(255).optional().nullable(),
+  icon: z.string().trim().min(1).max(50).optional(),
+  color: z.string().trim().regex(/^#[0-9A-Fa-f]{6}$/).optional(),
 });
 
 const transactionCreateInputSchema = z.object({
@@ -68,6 +72,8 @@ export const typeDefs = `#graphql
     id: ID!
     name: String!
     description: String
+    icon: String!
+    color: String!
     createdAt: String!
     updatedAt: String!
   }
@@ -103,12 +109,16 @@ export const typeDefs = `#graphql
   input CreateCategoryInput {
     name: String!
     description: String
+    icon: String
+    color: String
   }
 
   input UpdateCategoryInput {
     id: ID!
     name: String
     description: String
+    icon: String
+    color: String
   }
 
   input CreateTransactionInput {
@@ -259,6 +269,8 @@ export const resolvers = {
           data: {
             name: input.name,
             description: input.description ?? null,
+            icon: input.icon ?? "utensils",
+            color: input.color ?? "#2563EB",
             userId,
           },
         });
@@ -298,6 +310,8 @@ export const resolvers = {
               input.description !== undefined
                 ? input.description
                 : existing.description,
+            icon: input.icon ?? existing.icon,
+            color: input.color ?? existing.color,
           },
         });
       } catch (error) {

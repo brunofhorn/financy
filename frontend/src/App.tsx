@@ -12,6 +12,7 @@ import { ProfilePage } from "./pages/profile-page";
 import { RegisterPage } from "./pages/register-page";
 import { ReportsPage } from "./pages/reports-page";
 import { TransactionsPage } from "./pages/transactions-page";
+import { ToastProvider } from "./components/ui/toast";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -57,52 +58,54 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<RootRoute />} />
-            <Route
-              path="/cadastro"
-              element={
-                <PublicOnlyRoute>
-                  <RegisterPage />
-                </PublicOnlyRoute>
-              }
-            />
-            <Route
-              path="/transacoes"
-              element={
-                <ProtectedRoute>
-                  <TransactionsPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/categorias"
-              element={
-                <ProtectedRoute>
-                  <CategoriesPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/relatorios"
-              element={
-                <ProtectedRoute>
-                  <ReportsPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/perfil"
-              element={
-                <ProtectedRoute>
-                  <ProfilePage />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </BrowserRouter>
+        <ToastProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<RootRoute />} />
+              <Route
+                path="/cadastro"
+                element={
+                  <PublicOnlyRoute>
+                    <RegisterPage />
+                  </PublicOnlyRoute>
+                }
+              />
+              <Route
+                path="/transacoes"
+                element={
+                  <ProtectedRoute>
+                    <TransactionsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/categorias"
+                element={
+                  <ProtectedRoute>
+                    <CategoriesPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/relatorios"
+                element={
+                  <ProtectedRoute>
+                    <ReportsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/perfil"
+                element={
+                  <ProtectedRoute>
+                    <ProfilePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </BrowserRouter>
+        </ToastProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

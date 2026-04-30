@@ -1,12 +1,7 @@
 import { useMemo, useState } from "react";
 import {
-  BriefcaseBusiness,
-  CarFront,
   Edit2,
-  HeartPulse,
-  Landmark,
   Plus,
-  ShoppingCart,
   Tag,
   Trash2,
   Utensils,
@@ -14,63 +9,25 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { ConfirmDeleteDialog } from "../components/dialogs/confirm-delete-dialog";
 import { CategoryDialog } from "../components/dialogs/category-dialog";
 import { EmptyState } from "../components/shared/empty-state";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
+import { useToast } from "../components/ui/toast-context";
+import { getCategoryAppearance } from "../lib/category-appearance";
 import { useCategories, useCategoryMutations, useTransactions } from "../lib/hooks";
 import type { Category, Transaction } from "../lib/types";
 import { cn } from "../lib/utils";
-
-const categoryStyles = [
-  {
-    badge: "bg-finance-blue-light text-finance-blue-dark",
-    icon: "bg-finance-blue-light text-finance-blue-dark",
-    iconComponent: Utensils,
-  },
-  {
-    badge: "bg-finance-pink-light text-finance-pink-dark",
-    icon: "bg-finance-pink-light text-finance-pink-dark",
-    iconComponent: HeartPulse,
-  },
-  {
-    badge: "bg-finance-green-light text-finance-green-dark",
-    icon: "bg-finance-green-light text-finance-green-dark",
-    iconComponent: Landmark,
-  },
-  {
-    badge: "bg-finance-orange-light text-finance-orange-dark",
-    icon: "bg-finance-orange-light text-finance-orange-dark",
-    iconComponent: ShoppingCart,
-  },
-  {
-    badge: "bg-finance-green-light text-finance-green-dark",
-    icon: "bg-finance-green-light text-finance-green-dark",
-    iconComponent: BriefcaseBusiness,
-  },
-  {
-    badge: "bg-finance-red-light text-finance-red-dark",
-    icon: "bg-finance-red-light text-finance-red-dark",
-    iconComponent: HeartPulse,
-  },
-  {
-    badge: "bg-finance-purple-light text-finance-purple-dark",
-    icon: "bg-finance-purple-light text-finance-purple-dark",
-    iconComponent: CarFront,
-  },
-  {
-    badge: "bg-finance-yellow-light text-finance-yellow-dark",
-    icon: "bg-finance-yellow-light text-finance-yellow-dark",
-    iconComponent: Landmark,
-  },
-];
 
 export function CategoriesPage() {
   const categoriesQuery = useCategories();
   const transactionsQuery = useTransactions();
   const mutations = useCategoryMutations();
+  const toast = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
 
   const categories = useMemo(() => categoriesQuery.data ?? [], [categoriesQuery.data]);
   const transactions = useMemo(
@@ -93,12 +50,17 @@ export function CategoriesPage() {
     setDialogOpen(true);
   }
 
-  async function handleDelete(category: Category) {
-    const confirmed = window.confirm(`Excluir "${category.name}"?`);
-
-    if (confirmed) {
-      await mutations.remove.mutateAsync(category);
+  async function handleConfirmDelete() {
+    if (!categoryToDelete) {
+      return;
     }
+
+    await mutations.remove.mutateAsync(categoryToDelete);
+    toast.success({
+      title: "Categoria excluída",
+      description: "A categoria foi removida com sucesso.",
+    });
+    setCategoryToDelete(null);
   }
 
   return (
@@ -130,8 +92,8 @@ export function CategoriesPage() {
           label="TOTAL DE TRANSAÇÕES"
         />
         <MetricCard
-          icon={mostUsedCategory?.style.iconComponent ?? Utensils}
-          iconClassName={mostUsedCategory?.style.badge.replace("bg-", "text-") ?? "text-finance-blue-dark"}
+          icon={mostUsedCategory?.appearance.Icon ?? Utensils}
+          iconColor={mostUsedCategory?.appearance.color}
           value={mostUsedCategory?.name ?? "Nenhuma"}
           label="CATEGORIA MAIS UTILIZADA"
         />
@@ -144,7 +106,7 @@ export function CategoriesPage() {
       ) : categories.length ? (
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {categoryRows.map((row) => {
-            const Icon = row.style.iconComponent;
+            const Icon = row.appearance.Icon;
 
             return (
               <article
@@ -152,14 +114,23 @@ export function CategoriesPage() {
                 className="rounded-lg border border-[#e2e5e9] bg-white p-6"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <div className={cn("flex h-10 w-10 items-center justify-center rounded-md", row.style.icon)}>
+                  <div
+                    className="flex h-10 w-10 items-center justify-center rounded-md"
+                    style={{
+                      backgroundColor: row.appearance.backgroundColor,
+                      color: row.appearance.color,
+                    }}
+                  >
                     <Icon className="h-5 w-5" />
                   </div>
                   <div className="flex gap-2">
                     <ActionButton
                       title="Excluir"
-                      onClick={() => handleDelete(row.category)}
-                      disabled={mutations.remove.isPending}
+                      onClick={() => setCategoryToDelete(row.category)}
+                      disabled={
+                        mutations.remove.isPending &&
+                        categoryToDelete?.id === row.category.id
+                      }
                     >
                       <Trash2 className="h-4 w-4 text-feedback-danger" />
                     </ActionButton>
@@ -175,7 +146,13 @@ export function CategoriesPage() {
                 </p>
 
                 <div className="mt-6 flex items-center justify-between gap-4">
-                  <Badge className={cn("px-3 py-1.5 text-sm", row.style.badge)}>
+                  <Badge
+                    className="px-3 py-1.5 text-sm"
+                    style={{
+                      backgroundColor: row.appearance.backgroundColor,
+                      color: row.appearance.color,
+                    }}
+                  >
                     {row.name}
                   </Badge>
                   <span className="whitespace-nowrap text-sm text-[#4b5563]">
@@ -205,6 +182,19 @@ export function CategoriesPage() {
         onOpenChange={setDialogOpen}
         category={selectedCategory}
       />
+      <ConfirmDeleteDialog
+        open={Boolean(categoryToDelete)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setCategoryToDelete(null);
+          }
+        }}
+        title="Excluir categoria"
+        description="Essa ação não pode ser desfeita. As transações vinculadas ficarão sem categoria."
+        itemName={categoryToDelete?.name}
+        isDeleting={mutations.remove.isPending}
+        onConfirm={handleConfirmDelete}
+      />
     </div>
   );
 }
@@ -212,18 +202,20 @@ export function CategoriesPage() {
 function MetricCard({
   icon: Icon,
   iconClassName,
+  iconColor,
   value,
   label,
 }: {
   icon: LucideIcon;
-  iconClassName: string;
+  iconClassName?: string;
+  iconColor?: string;
   value: string;
   label: string;
 }) {
   return (
     <article className="rounded-lg border border-[#e2e5e9] bg-white px-7 py-6">
       <div className="flex items-center gap-5">
-        <Icon className={cn("h-6 w-6 shrink-0", iconClassName)} />
+        <Icon className={cn("h-6 w-6 shrink-0", iconClassName)} style={{ color: iconColor }} />
         <div className="min-w-0">
           <p className="truncate text-3xl font-extrabold text-[#111827]">{value}</p>
           <p className="mt-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b7280]">
@@ -262,11 +254,10 @@ function ActionButton({
 
 function buildCategoryRows(categories: Category[], transactions: Transaction[]) {
   return categories
-    .map((category, index) => {
+    .map((category) => {
       const count = transactions.filter(
         (transaction) => transaction.category?.id === category.id,
       ).length;
-      const style = resolveCategoryStyle(category.name, index);
 
       return {
         category,
@@ -274,23 +265,8 @@ function buildCategoryRows(categories: Category[], transactions: Transaction[]) 
         name: category.name,
         description: category.description,
         count,
-        style,
+        appearance: getCategoryAppearance(category),
       };
     })
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
-}
-
-function resolveCategoryStyle(name: string, index: number) {
-  const normalizedName = name.toLowerCase();
-
-  if (normalizedName.includes("aliment")) return categoryStyles[0];
-  if (normalizedName.includes("entre")) return categoryStyles[1];
-  if (normalizedName.includes("invest")) return categoryStyles[2];
-  if (normalizedName.includes("merc")) return categoryStyles[3];
-  if (normalizedName.includes("sal")) return categoryStyles[4];
-  if (normalizedName.includes("sa")) return categoryStyles[5];
-  if (normalizedName.includes("trans")) return categoryStyles[6];
-  if (normalizedName.includes("util")) return categoryStyles[7];
-
-  return categoryStyles[index % categoryStyles.length];
 }

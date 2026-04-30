@@ -13,6 +13,8 @@ const CATEGORY_FIELDS = `
   id
   name
   description
+  icon
+  color
   createdAt
   updatedAt
 `;
@@ -45,6 +47,8 @@ export type LoginInput = {
 export type CategoryInput = {
   name: string;
   description?: string | null;
+  icon?: string;
+  color?: string;
 };
 
 export type TransactionInput = {

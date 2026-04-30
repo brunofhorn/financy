@@ -16,6 +16,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { ConfirmDeleteDialog } from "../components/dialogs/confirm-delete-dialog";
 import { TransactionDialog } from "../components/dialogs/transaction-dialog";
 import { EmptyState } from "../components/shared/empty-state";
 import { Badge } from "../components/ui/badge";
@@ -28,6 +29,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select";
+import { useToast } from "../components/ui/toast-context";
+import { getCategoryAppearance } from "../lib/category-appearance";
 import { formatCurrency } from "../lib/format";
 import { useCategories, useTransactionMutations, useTransactions } from "../lib/hooks";
 import type { Transaction } from "../lib/types";
@@ -69,12 +72,22 @@ const categoryStyles = [
   },
 ];
 
+type TransactionStyle = {
+  badge?: string;
+  icon?: string;
+  iconComponent: LucideIcon;
+  color?: string;
+  backgroundColor?: string;
+};
+
 export function TransactionsPage() {
   const transactionsQuery = useTransactions();
   const categoriesQuery = useCategories();
   const mutations = useTransactionMutations();
+  const toast = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [transactionToDelete, setTransactionToDelete] = useState<Transaction | null>(null);
   const [search, setSearch] = useState("");
   const [type, setType] = useState<string>(ALL);
   const [categoryId, setCategoryId] = useState<string>(ALL);
@@ -124,12 +137,17 @@ export function TransactionsPage() {
     setDialogOpen(true);
   }
 
-  async function handleDelete(transaction: Transaction) {
-    const confirmed = window.confirm(`Excluir "${transaction.title}"?`);
-
-    if (confirmed) {
-      await mutations.remove.mutateAsync(transaction);
+  async function handleConfirmDelete() {
+    if (!transactionToDelete) {
+      return;
     }
+
+    await mutations.remove.mutateAsync(transactionToDelete);
+    toast.success({
+      title: "Transação excluída",
+      description: "O lançamento foi removido com sucesso.",
+    });
+    setTransactionToDelete(null);
   }
 
   function updateFilter(callback: () => void) {
@@ -242,8 +260,11 @@ export function TransactionsPage() {
                     transaction={transaction}
                     style={getTransactionStyle(transaction, index)}
                     onEdit={() => openEditDialog(transaction)}
-                    onDelete={() => handleDelete(transaction)}
-                    deleting={mutations.remove.isPending}
+                    onDelete={() => setTransactionToDelete(transaction)}
+                    deleting={
+                      mutations.remove.isPending &&
+                      transactionToDelete?.id === transaction.id
+                    }
                   />
                 ))}
               </tbody>
@@ -280,6 +301,19 @@ export function TransactionsPage() {
         onOpenChange={setDialogOpen}
         transaction={selectedTransaction}
       />
+      <ConfirmDeleteDialog
+        open={Boolean(transactionToDelete)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setTransactionToDelete(null);
+          }
+        }}
+        title="Excluir transação"
+        description="Essa ação não pode ser desfeita. A transação será removida permanentemente do seu histórico."
+        itemName={transactionToDelete?.title}
+        isDeleting={mutations.remove.isPending}
+        onConfirm={handleConfirmDelete}
+      />
     </div>
   );
 }
@@ -307,7 +341,7 @@ function TransactionTableRow({
   deleting,
 }: {
   transaction: Transaction;
-  style: { badge: string; icon: string; iconComponent: LucideIcon };
+  style: TransactionStyle;
   onEdit: () => void;
   onDelete: () => void;
   deleting: boolean;
@@ -319,7 +353,14 @@ function TransactionTableRow({
     <tr className="hover:bg-[#f7f8fa]">
       <td className="px-6 py-4">
         <div className="flex items-center gap-4">
-          <div className={cn("flex h-10 w-10 items-center justify-center rounded-md", style.icon)}>
+          <div
+            className={cn("flex h-10 w-10 items-center justify-center rounded-md", style.icon)}
+            style={
+              style.color
+                ? { color: style.color, backgroundColor: style.backgroundColor }
+                : undefined
+            }
+          >
             <Icon className="h-5 w-5" />
           </div>
           <div>
@@ -334,7 +375,14 @@ function TransactionTableRow({
       </td>
       <td className="px-6 py-4 text-[#4b5563]">{formatShortDate(transaction.date)}</td>
       <td className="px-6 py-4">
-        <Badge className={cn("px-3 py-1.5 text-sm", style.badge)}>
+        <Badge
+          className={cn("px-3 py-1.5 text-sm", style.badge)}
+          style={
+            style.color
+              ? { color: style.color, backgroundColor: style.backgroundColor }
+              : undefined
+          }
+        >
           {transaction.category?.name ?? "Sem categoria"}
         </Badge>
       </td>
@@ -458,7 +506,16 @@ function PaginationButton({
   );
 }
 
-function getTransactionStyle(transaction: Transaction, index: number) {
+function getTransactionStyle(transaction: Transaction, index: number): TransactionStyle {
+  if (transaction.category) {
+    const appearance = getCategoryAppearance(transaction.category);
+    return {
+      iconComponent: appearance.Icon,
+      color: appearance.color,
+      backgroundColor: appearance.backgroundColor,
+    };
+  }
+
   if (transaction.type === "INCOME") {
     return {
       badge: "bg-finance-green-light text-finance-green-dark",
@@ -467,20 +524,7 @@ function getTransactionStyle(transaction: Transaction, index: number) {
     };
   }
 
-  const categoryName = transaction.category?.name.toLowerCase() ?? "";
-  const categoryIndex = categoryName.includes("aliment")
-    ? 0
-    : categoryName.includes("trans")
-      ? 1
-      : categoryName.includes("merc")
-        ? 2
-        : categoryName.includes("util")
-          ? 4
-          : categoryName.includes("entre")
-            ? 5
-            : index % categoryStyles.length;
-
-  return categoryStyles[categoryIndex];
+  return categoryStyles[index % categoryStyles.length];
 }
 
 function getPeriods(transactions: Transaction[]) {
