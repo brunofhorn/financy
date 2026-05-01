@@ -1,6 +1,6 @@
 ﻿# Backend - Sistema de Financas
 
-API GraphQL em TypeScript para gerenciamento de financas pessoais com autenticacao JWT, Prisma e PostgreSQL.
+API GraphQL em TypeScript para gerenciamento de finanças pessoais com autenticação JWT, Prisma e PostgreSQL.
 
 ## Stack
 
@@ -12,14 +12,14 @@ API GraphQL em TypeScript para gerenciamento de financas pessoais com autenticac
 
 ## Requisitos atendidos
 
-- Cadastro e login de usuario
-- Usuario visualiza e gerencia apenas seus proprios dados
+- Cadastro e login de usuário
+- Usuário visualiza e gerencia apenas seus próprios dados
 - CRUD de categorias
-- CRUD de transacoes
+- CRUD de transações
 - CORS habilitado
-- Documentacao Swagger em `/docs`
+- Documentação Swagger em `/docs`
 
-## Variaveis de ambiente
+## Variáveis de ambiente
 
 Copie `.env.example` para `.env` e preencha os valores:
 
@@ -43,14 +43,14 @@ npm run dev
 
 O seed cria:
 
-- 1 usuario de login
-- Categorias base (salario, freelance, moradia, alimentacao, transporte, lazer)
-- Transacoes de entrada e saida
+- 1 usuário de login
+- Categorias base (salário, freelance, moradia, alimentação, transporte, lazer)
+- Transações de entrada e saída
 
 Credenciais de acesso criadas pelo seed:
 
 - Email: `demo@financy.local`
-- Senha: `123456`
+- Senha: `12345678`
 
 ## Endpoints
 
@@ -58,9 +58,9 @@ Credenciais de acesso criadas pelo seed:
 - Swagger UI: `http://localhost:3333/docs`
 - Healthcheck: `http://localhost:3333/health`
 
-## Swagger e autenticacao
+## Swagger e autenticação
 
-Para operacoes protegidas no endpoint `/graphql`:
+Para operações protegidas no endpoint `/graphql`:
 
 1. Execute `register` ou `login` para obter o token.
 2. No Swagger, clique em **Authorize**.
@@ -76,8 +76,8 @@ Modelos:
 
 Regra de ownership:
 
-- Categorias e transacoes sempre filtradas por `userId` do token autenticado.
+- Categorias e transações sempre filtradas por `userId` do token autenticado.
 
 ## Docker
 
-Na raiz do repositorio existe um `docker-compose.yml` que sobe Postgres, backend e frontend juntos. Para uso isolado do backend em Docker, prefira executar pela raiz do projeto.
+Na raiz do repositório existe um `docker-compose.yml` que sobe Postgres, backend e frontend juntos. Para uso isolado do backend em Docker, prefira executar pela raiz do projeto.
