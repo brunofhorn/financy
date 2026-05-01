@@ -65,6 +65,13 @@ export function TransactionDialog({
   const toast = useToast();
   const isEditing = Boolean(transaction);
   const mutation = isEditing ? mutations.update : mutations.create;
+  const sortedCategories = useMemo(
+    () =>
+      [...(categoriesQuery.data ?? [])].sort((a, b) =>
+        a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }),
+      ),
+    [categoriesQuery.data],
+  );
 
   const defaultValues = useMemo<TransactionFormData>(
     () => ({
@@ -116,7 +123,7 @@ export function TransactionDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[324px] gap-4 rounded-lg border-[#e2e5e9] p-5 shadow-[0_16px_40px_rgba(17,24,39,0.18)]">
+      <DialogContent className="max-w-[448px] gap-4 rounded-lg border-[#e2e5e9] p-5 shadow-[0_16px_40px_rgba(17,24,39,0.18)]">
         <DialogHeader>
           <DialogTitle className="text-sm font-bold text-[#111827]">
             {isEditing ? "Editar transação" : "Nova transação"}
@@ -196,7 +203,7 @@ export function TransactionDialog({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value={NO_CATEGORY}>Sem categoria</SelectItem>
-                    {(categoriesQuery.data ?? []).map((category) => (
+                    {sortedCategories.map((category) => (
                       <SelectItem key={category.id} value={category.id}>
                         {category.name}
                       </SelectItem>
