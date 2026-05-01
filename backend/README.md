@@ -25,11 +25,11 @@ Copie `.env.example` para `.env` e preencha os valores:
 
 ```env
 JWT_SECRET=
-DATABASE_URL=
+DATABASE_URL=postgresql://financy:financy@localhost:5432/financy?schema=public
 PORT=3333
 ```
 
-## Como rodar
+## Como rodar sem Docker
 
 ```bash
 npm install
@@ -77,3 +77,7 @@ Modelos:
 Regra de ownership:
 
 - Categorias e transacoes sempre filtradas por `userId` do token autenticado.
+
+## Docker
+
+Na raiz do repositorio existe um `docker-compose.yml` que sobe Postgres, backend e frontend juntos. Para uso isolado do backend em Docker, prefira executar pela raiz do projeto.

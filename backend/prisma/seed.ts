@@ -30,12 +30,42 @@ async function main() {
   await prisma.category.deleteMany({ where: { userId: user.id } });
 
   const categoriesData = [
-    { name: "Salario", description: "Entradas recorrentes" },
-    { name: "Freelance", description: "Projetos extras" },
-    { name: "Moradia", description: "Aluguel e contas da casa" },
-    { name: "Alimentacao", description: "Mercado e refeicoes" },
-    { name: "Transporte", description: "Combustivel e aplicativos" },
-    { name: "Lazer", description: "Cinema, streaming e passeios" },
+    {
+      name: "Salario",
+      description: "Entradas recorrentes",
+      icon: "briefcase",
+      color: "#1F6E43",
+    },
+    {
+      name: "Freelance",
+      description: "Projetos extras",
+      icon: "wallet",
+      color: "#16A34A",
+    },
+    {
+      name: "Moradia",
+      description: "Aluguel e contas da casa",
+      icon: "home",
+      color: "#CA8A04",
+    },
+    {
+      name: "Alimentacao",
+      description: "Mercado e refeicoes",
+      icon: "utensils",
+      color: "#2563EB",
+    },
+    {
+      name: "Transporte",
+      description: "Combustivel e aplicativos",
+      icon: "car",
+      color: "#9333EA",
+    },
+    {
+      name: "Lazer",
+      description: "Cinema, streaming e passeios",
+      icon: "gift",
+      color: "#DB2777",
+    },
   ];
 
   const createdCategories = await Promise.all(

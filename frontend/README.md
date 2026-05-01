@@ -19,12 +19,12 @@ Aplicacao React para gerenciamento de transacoes e categorias, integrada ao back
 Copie `.env.example` para `.env` e informe a URL do backend:
 
 ```env
-VITE_BACKEND_URL=http://localhost:3333/graphql
+VITE_BACKEND_URL=http://localhost:3333
 ```
 
-Se a variavel estiver vazia, o frontend usa `http://localhost:3333/graphql`.
+O cliente adiciona `/graphql` automaticamente quando a URL nao termina com esse caminho.
 
-## Como rodar
+## Como rodar sem Docker
 
 ```bash
 npm install
@@ -45,34 +45,4 @@ npm run dev
 - `/transacoes`: CRUD de transacoes
 - `/categorias`: CRUD de categorias
 - `/relatorios`: resumo por tipo e categoria
-- `/perfil`: dados da conta e endpoint configurado
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- `/perfil`: dados da conta
