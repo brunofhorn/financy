@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 import financyMark from "../../assets/financy-mark.png";
-import financyWordmark from "../../assets/financy-wordmark.png";
+import financyWordmark from "../../assets/financy-logo-letter.png";
 import { useAuth } from "../../context/auth-context";
 import { cn } from "../../lib/utils";
 

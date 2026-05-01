@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EyeOff, Loader2, LockKeyhole, LogIn, Mail, UserRound } from "lucide-react";
+import { Eye, EyeOff, Loader2, LockKeyhole, LogIn, Mail, UserRound } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
@@ -11,7 +12,7 @@ import { Input } from "../components/ui/input";
 import { useAuth } from "../context/auth-context";
 import { register } from "../lib/api";
 import financyMark from "../assets/financy-mark.png";
-import financyWordmark from "../assets/financy-wordmark.png";
+import financyWordmark from "../assets/financy-logo-letter.png";
 
 const registerSchema = z.object({
   name: z.string().trim().min(2, "Informe ao menos 2 caracteres."),
@@ -26,6 +27,7 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 
 export function RegisterPage() {
   const { setSession } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
   const mutation = useMutation({
     mutationFn: register,
     onSuccess: setSession,
@@ -93,16 +95,29 @@ export function RegisterPage() {
             htmlFor="password"
             error={form.formState.errors.password?.message}
           >
-            <Input
-              id="password"
-              icon={<LockKeyhole className="h-4 w-4" />}
-              rightIcon={<EyeOff className="h-4 w-4" />}
-              type="password"
-              placeholder="Digite sua senha"
-              error={Boolean(form.formState.errors.password)}
-              className="h-12 rounded-md border-[#d4d6da] text-base placeholder:text-[#9ca3af]"
-              {...form.register("password")}
-            />
+            <div className="relative">
+              <Input
+                id="password"
+                icon={<LockKeyhole className="h-4 w-4" />}
+                type={showPassword ? "text" : "password"}
+                placeholder="Digite sua senha"
+                error={Boolean(form.formState.errors.password)}
+                className="h-12 rounded-md border-[#d4d6da] pr-10 text-base placeholder:text-[#9ca3af]"
+                {...form.register("password")}
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 z-10 flex w-10 items-center justify-center text-[#111827] transition-colors hover:text-brand-base"
+                onClick={() => setShowPassword((current) => !current)}
+                aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+              >
+                {showPassword ? (
+                  <Eye className="h-4 w-4" />
+                ) : (
+                  <EyeOff className="h-4 w-4" />
+                )}
+              </button>
+            </div>
           </Field>
           <p className="-mt-1 text-xs text-[#6b7280]">
             A senha deve ter no minimo 8 caracteres
