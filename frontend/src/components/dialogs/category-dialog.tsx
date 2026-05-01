@@ -146,18 +146,21 @@ export function CategoryDialog({
 
           <div className="space-y-2">
             <span className="block text-xs font-semibold text-[#374151]">Cor</span>
-            <div className="flex gap-2">
+            <div className="grid grid-cols-7 gap-2">
               {CATEGORY_COLOR_OPTIONS.map((color) => (
                 <button
                   key={color}
                   type="button"
                   onClick={() => setSelectedColor(color)}
-                  className={cn(
-                    "h-6 w-8 rounded-lg border-2 border-white shadow-[0_0_0_1px_#d4d6da]",
-                    selectedColor === color && "shadow-[0_0_0_2px_#ffffff,0_0_0_4px_#1F6E43]",
-                  )}
-                  style={{ backgroundColor: color }}
+                  className="h-8 rounded-lg border p-1 transition-colors"
+                  style={{
+                    borderColor: selectedColor === color ? color : "#d1d5db",
+                  }}
                 >
+                  <span
+                    className="block h-full w-full rounded-sm border-4 border-white"
+                    style={{ backgroundColor: color }}
+                  />
                   <span className="sr-only">{color}</span>
                 </button>
               ))}
