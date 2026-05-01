@@ -1,3 +1,5 @@
+/// <reference types="node" />
+
 import "dotenv/config";
 import bcrypt from "bcryptjs";
 import { PrismaClient, Prisma, TransactionType } from "@prisma/client";
@@ -5,9 +7,9 @@ import { PrismaClient, Prisma, TransactionType } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const seedUser = {
-  name: "Usuario Demo",
+  name: "Usuário Demo",
   email: "demo@financy.local",
-  password: "123456",
+  password: "12345678",
 };
 
 async function main() {
@@ -31,7 +33,7 @@ async function main() {
 
   const categoriesData = [
     {
-      name: "Salario",
+      name: "Salário",
       description: "Entradas recorrentes",
       icon: "briefcase",
       color: "#1F6E43",
@@ -49,14 +51,14 @@ async function main() {
       color: "#CA8A04",
     },
     {
-      name: "Alimentacao",
-      description: "Mercado e refeicoes",
+      name: "Alimentação",
+      description: "Mercado e refeições",
       icon: "utensils",
       color: "#2563EB",
     },
     {
       name: "Transporte",
-      description: "Combustivel e aplicativos",
+      description: "Combustível e aplicativos",
       icon: "car",
       color: "#9333EA",
     },
@@ -92,12 +94,12 @@ async function main() {
     categoryName: string;
   }> = [
     {
-      title: "Salario mensal",
+      title: "Salário mensal",
       amount: 5200,
       type: "INCOME",
       date: "2026-04-05T11:00:00.000Z",
       notes: "Pagamento empresa",
-      categoryName: "Salario",
+      categoryName: "Salário",
     },
     {
       title: "Projeto landing page",
@@ -120,17 +122,17 @@ async function main() {
       amount: 430.75,
       type: "EXPENSE",
       date: "2026-04-10T18:30:00.000Z",
-      categoryName: "Alimentacao",
+      categoryName: "Alimentação",
     },
     {
       title: "Restaurante",
       amount: 92.4,
       type: "EXPENSE",
       date: "2026-04-17T22:00:00.000Z",
-      categoryName: "Alimentacao",
+      categoryName: "Alimentação",
     },
     {
-      title: "Combustivel",
+      title: "Combustível",
       amount: 250,
       type: "EXPENSE",
       date: "2026-04-15T13:00:00.000Z",
@@ -175,9 +177,9 @@ async function main() {
   console.log("Seed finalizado com sucesso.");
   console.log(`Login: ${seedUser.email} / ${seedUser.password}`);
   console.log(`Categorias criadas: ${createdCategories.length}`);
-  console.log(`Transacoes criadas: ${transactionsData.length}`);
+  console.log(`Transações criadas: ${transactionsData.length}`);
   console.log(
-    `Resumo: entradas ${formatCurrency(totalIncomes)} | saidas ${formatCurrency(totalExpenses)} | saldo ${formatCurrency(totalIncomes - totalExpenses)}`,
+    `Resumo: entradas ${formatCurrency(totalIncomes)} | saídas ${formatCurrency(totalExpenses)} | saldo ${formatCurrency(totalIncomes - totalExpenses)}`,
   );
 }
 

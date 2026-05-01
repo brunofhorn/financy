@@ -112,12 +112,12 @@ export function LoginPage() {
                 />
                 Lembrar-me
               </label>
-              <button
-                type="button"
+              <Link
+                to="/recuperar-senha"
                 className="font-semibold text-brand-base transition-colors hover:text-brand-dark"
               >
                 Recuperar senha
-              </button>
+              </Link>
             </div>
 
             {error ? <p className="text-sm text-feedback-danger">{error}</p> : null}

@@ -7,7 +7,7 @@ const net = require("node:net");
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
-  console.error("DATABASE_URL nao definida.");
+  console.error("DATABASE_URL não definida.");
   process.exit(1);
 }
 
@@ -38,7 +38,7 @@ function retry() {
   if (done) return;
   if (Date.now() > deadline) {
     done = true;
-    console.error(`Banco indisponivel em ${host}:${port}.`);
+    console.error(`Banco indisponível em ${host}:${port}.`);
     process.exit(1);
   }
   setTimeout(attempt, 1_000);

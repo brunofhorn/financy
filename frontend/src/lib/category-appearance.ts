@@ -1,15 +1,20 @@
 import {
+  BaggageClaim,
+  BookOpen,
   BriefcaseBusiness,
   CarFront,
+  Dumbbell,
   Gift,
   HeartPulse,
-  Home,
-  Landmark,
+  House,
+  Mailbox,
+  PawPrint,
+  PiggyBank,
   ReceiptText,
   ShoppingCart,
-  Tags,
+  Ticket,
+  ToolCase,
   Utensils,
-  WalletCards,
   type LucideIcon,
 } from "lucide-react";
 
@@ -19,24 +24,30 @@ export const CATEGORY_ICON_OPTIONS: Array<{ id: string; icon: LucideIcon }> = [
   { id: "briefcase", icon: BriefcaseBusiness },
   { id: "car", icon: CarFront },
   { id: "heart", icon: HeartPulse },
-  { id: "landmark", icon: Landmark },
+  { id: "pigbank", icon: PiggyBank },
   { id: "cart", icon: ShoppingCart },
-  { id: "tags", icon: Tags },
-  { id: "gift", icon: Gift },
+  { id: "ticket", icon: Ticket },
+  { id: "toolcase", icon: ToolCase },
   { id: "utensils", icon: Utensils },
-  { id: "home", icon: Home },
-  { id: "wallet", icon: WalletCards },
+  { id: "pawprint", icon: PawPrint },
+  { id: "house", icon: House },
+  { id: "gift", icon: Gift },
+  { id: "dumbbell", icon: Dumbbell },
+  { id: "bookopen", icon: BookOpen },
+  { id: "baggageclaim", icon: BaggageClaim },
+  { id: "mailbox", icon: Mailbox },
   { id: "receipt", icon: ReceiptText },
+  { id: "receipt", icon: ReceiptText }
 ];
 
 export const CATEGORY_COLOR_OPTIONS = [
-  "#1F6E43",
-  "#2563EB",
-  "#9333EA",
-  "#DB2777",
-  "#DC2626",
-  "#EA580C",
-  "#CA8A04",
+  "#16A34A",
+  "#2563eb",
+  "#9333ea",
+  "#db2777",
+  "#dc2626",
+  "#ea580c",
+  "#ca8a04"
 ];
 
 export function getCategoryAppearance(category?: Pick<Category, "icon" | "color"> | null) {

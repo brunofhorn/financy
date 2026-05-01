@@ -6,12 +6,12 @@ export const swaggerSpec = {
     title: "Financy Backend API",
     version: "1.0.0",
     description:
-      "Documentacao OpenAPI para a API GraphQL de financas. Use os exemplos de payload para executar as operacoes no endpoint /graphql.",
+      "Documentação OpenAPI para a API GraphQL de finanças. Use os exemplos de payload para executar as operações no endpoint /graphql.",
   },
   servers: [{ url: "http://localhost:3333" }],
   tags: [
-    { name: "Infra", description: "Status da aplicacao" },
-    { name: "GraphQL", description: "Operacoes via endpoint GraphQL unico" },
+    { name: "Infra", description: "Status da aplicação" },
+    { name: "GraphQL", description: "Operações via endpoint GraphQL único" },
   ],
   components: {
     securitySchemes: {
@@ -71,9 +71,9 @@ export const swaggerSpec = {
     [graphqlEndpoint]: {
       post: {
         tags: ["GraphQL"],
-        summary: "Endpoint unico do GraphQL",
+        summary: "Endpoint único do GraphQL",
         description:
-          "Execute queries e mutations enviando um payload GraphQL em JSON. Quando a operacao exige autenticacao, envie o token JWT no header Authorization.",
+          "Execute queries e mutations enviando um payload GraphQL em JSON. Quando a operação exige autenticação, envie o token JWT no header Authorization.",
         security: [{ bearerAuth: [] }],
         requestBody: {
           required: true,
@@ -90,7 +90,7 @@ export const swaggerSpec = {
                       input: {
                         name: "Ana Silva",
                         email: "ana@email.com",
-                        password: "123456",
+                        password: "12345678",
                       },
                     },
                     operationName: "Register",
@@ -104,7 +104,7 @@ export const swaggerSpec = {
                     variables: {
                       input: {
                         email: "ana@email.com",
-                        password: "123456",
+                        password: "12345678",
                       },
                     },
                     operationName: "Login",
@@ -125,7 +125,7 @@ export const swaggerSpec = {
                       "mutation CreateCategory($input: CreateCategoryInput!) { createCategory(input: $input) { id name description } }",
                     variables: {
                       input: {
-                        name: "Alimentacao",
+                        name: "Alimentação",
                         description: "Gastos com comida",
                       },
                     },
@@ -133,7 +133,7 @@ export const swaggerSpec = {
                   },
                 },
                 listTransactions: {
-                  summary: "Listar transacoes",
+                  summary: "Listar transações",
                   value: {
                     query:
                       "query Transactions { transactions { id title amount type date notes category { id name } } }",
@@ -141,7 +141,7 @@ export const swaggerSpec = {
                   },
                 },
                 createTransaction: {
-                  summary: "Criar transacao",
+                  summary: "Criar transação",
                   value: {
                     query:
                       "mutation CreateTransaction($input: CreateTransactionInput!) { createTransaction(input: $input) { id title amount type date } }",

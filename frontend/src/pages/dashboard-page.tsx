@@ -100,8 +100,8 @@ export function DashboardPage() {
         />
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(360px,1fr)]">
-        <div className="overflow-hidden rounded-lg border border-[#e2e5e9] bg-white">
+      <section className="grid gap-6 lg:grid-cols-3">
+        <div className="overflow-hidden rounded-lg border border-[#e2e5e9] bg-white lg:col-span-2">
           <PanelHeader title="TRANSAÇÕES RECENTES" href="/transacoes" action="Ver todas" />
 
           {transactionsQuery.isLoading ? (
@@ -130,7 +130,7 @@ export function DashboardPage() {
           </button>
         </div>
 
-        <div className="overflow-hidden rounded-lg border border-[#e2e5e9] bg-white self-start">
+        <div className="self-start overflow-hidden rounded-lg border border-[#e2e5e9] bg-white">
           <PanelHeader title="CATEGORIAS" href="/categorias" action="Gerenciar" />
 
           {categoriesQuery.isLoading || transactionsQuery.isLoading ? (
@@ -139,9 +139,12 @@ export function DashboardPage() {
             <div className="space-y-5 px-6 py-6">
               {categoryRows.map((row) => {
                 return (
-                  <div key={row.id} className="grid grid-cols-[1fr_auto_auto] items-center gap-6">
+                  <div
+                    key={row.id}
+                    className="grid grid-cols-[minmax(0,1fr)_64px_82px] items-center gap-3"
+                  >
                     <Badge
-                      className="justify-center px-3 py-1.5 text-sm"
+                      className="w-fit justify-self-start px-3 py-1.5 text-sm"
                       style={{
                         color: row.appearance.color,
                         backgroundColor: row.appearance.backgroundColor,
@@ -149,8 +152,10 @@ export function DashboardPage() {
                     >
                       {row.name}
                     </Badge>
-                    <span className="text-sm text-[#4b5563]">{row.count} itens</span>
-                    <strong className="whitespace-nowrap text-sm text-[#111827]">
+                    <span className="text-right text-sm text-[#4b5563]">
+                      {row.count} itens
+                    </span>
+                    <strong className="whitespace-nowrap text-right text-sm text-[#111827]">
                       {formatCurrency(row.total)}
                     </strong>
                   </div>

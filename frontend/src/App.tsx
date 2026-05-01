@@ -13,6 +13,7 @@ import { RegisterPage } from "./pages/register-page";
 import { ReportsPage } from "./pages/reports-page";
 import { TransactionsPage } from "./pages/transactions-page";
 import { ToastProvider } from "./components/ui/toast";
+import { ForgotPasswordPage } from "./pages/forgot-password-page";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -67,6 +68,14 @@ export default function App() {
                 element={
                   <PublicOnlyRoute>
                     <RegisterPage />
+                  </PublicOnlyRoute>
+                }
+              />
+              <Route
+                path="/recuperar-senha"
+                element={
+                  <PublicOnlyRoute>
+                    <ForgotPasswordPage />
                   </PublicOnlyRoute>
                 }
               />

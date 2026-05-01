@@ -24,7 +24,7 @@ import { useToast } from "../ui/toast-context";
 
 const categorySchema = z.object({
   name: z.string().trim().min(2, "Informe ao menos 2 caracteres."),
-  description: z.string().trim().max(255, "Use no maximo 255 caracteres.").optional(),
+  description: z.string().trim().max(255, "Use no máximo 255 caracteres.").optional(),
 });
 
 type CategoryFormData = z.infer<typeof categorySchema>;
@@ -153,7 +153,7 @@ export function CategoryDialog({
                   type="button"
                   onClick={() => setSelectedColor(color)}
                   className={cn(
-                    "h-6 w-8 rounded-md border border-white shadow-[0_0_0_1px_#d4d6da]",
+                    "h-6 w-8 rounded-md border-2 border-white shadow-[0_0_0_1px_#d4d6da]",
                     selectedColor === color && "shadow-[0_0_0_2px_#ffffff,0_0_0_4px_#1F6E43]",
                   )}
                   style={{ backgroundColor: color }}

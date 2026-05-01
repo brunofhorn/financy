@@ -246,9 +246,9 @@ export function TransactionsPage() {
               <thead>
                 <tr className="border-b border-[#edf0f2] text-xs font-semibold uppercase tracking-[0.12em] text-[#6b7280]">
                   <th className="px-6 py-5">Descrição</th>
-                  <th className="px-6 py-5">Data</th>
-                  <th className="px-6 py-5">Categoria</th>
-                  <th className="px-6 py-5">Tipo</th>
+                  <th className="px-6 py-5 text-center">Data</th>
+                  <th className="px-6 py-5 text-center">Categoria</th>
+                  <th className="px-6 py-5 text-center">Tipo</th>
                   <th className="px-6 py-5 text-right">Valor</th>
                   <th className="px-6 py-5 text-right">Ações</th>
                 </tr>
@@ -373,8 +373,8 @@ function TransactionTableRow({
           </div>
         </div>
       </td>
-      <td className="px-6 py-4 text-[#4b5563]">{formatShortDate(transaction.date)}</td>
-      <td className="px-6 py-4">
+      <td className="px-6 py-4 text-[#4b5563] text-center">{formatShortDate(transaction.date)}</td>
+      <td className="px-6 py-4 text-center">
         <Badge
           className={cn("px-3 py-1.5 text-sm", style.badge)}
           style={
@@ -386,7 +386,7 @@ function TransactionTableRow({
           {transaction.category?.name ?? "Sem categoria"}
         </Badge>
       </td>
-      <td className="px-6 py-4">
+      <td className="px-6 py-4 text-center">
         <span
           className={cn(
             "inline-flex items-center gap-2 text-sm font-semibold",

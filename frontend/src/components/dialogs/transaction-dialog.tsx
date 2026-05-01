@@ -42,9 +42,9 @@ const transactionSchema = z.object({
     .string()
     .min(1, "Informe a data.")
     .regex(/^\d{2}\/\d{2}\/\d{4}$/, "Use o formato DD/MM/AAAA.")
-    .refine((value) => Boolean(parsePtBrDate(value)), "Informe uma data valida."),
+    .refine((value) => Boolean(parsePtBrDate(value)), "Informe uma data válida."),
   categoryId: z.string().optional(),
-  notes: z.string().trim().max(500, "Use no maximo 500 caracteres.").optional(),
+  notes: z.string().trim().max(500, "Use no máximo 500 caracteres.").optional(),
 });
 
 type TransactionFormData = z.infer<typeof transactionSchema>;

@@ -51,13 +51,13 @@ export async function graphqlRequest<TData, TVariables = unknown>(
   try {
     payload = (await response.json()) as GraphQLResponse<TData>;
   } catch {
-    throw new ApiError("Nao foi possivel ler a resposta da API.");
+    throw new ApiError("Não foi possível ler a resposta da API.");
   }
 
   if (!response.ok || payload.errors?.length) {
     const error = payload.errors?.[0];
     throw new ApiError(
-      error?.message ?? "Nao foi possivel concluir a operacao.",
+      error?.message ?? "Não foi possível concluir a operação.",
       error?.extensions?.code,
     );
   }

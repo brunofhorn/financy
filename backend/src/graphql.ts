@@ -7,21 +7,21 @@ import type { GraphQLContext } from "./context.js";
 import { signAccessToken } from "./lib/auth.js";
 
 const registerInputSchema = z.object({
-  name: z.string().trim().min(2, "Nome deve ter ao menos 2 caracteres."),
-  email: z.string().trim().email("E-mail inválido."),
+  name: z.string().trim().min(2, "O nome deve ter ao menos 2 caracteres."),
+  email: z.email("O e-mail está inválido."),
   password: z
     .string()
-    .min(6, "Senha deve ter ao menos 6 caracteres.")
-    .max(72, "Senha muito longa."),
+    .min(8, "A senha deve ter ao menos 8 caracteres.")
+    .max(72, "A senha está muito longa."),
 });
 
 const loginInputSchema = z.object({
-  email: z.string().trim().email("E-mail inválido."),
-  password: z.string().min(1, "Senha é obrigatória."),
+  email: z.email("O e-mail está inválido."),
+  password: z.string().min(1, "A senha é obrigatória."),
 });
 
 const categoryCreateInputSchema = z.object({
-  name: z.string().trim().min(2, "Nome deve ter ao menos 2 caracteres."),
+  name: z.string().trim().min(2, "O nome deve ter ao menos 2 caracteres."),
   description: z.string().trim().max(255).optional().nullable(),
   icon: z.string().trim().min(1).max(50).optional(),
   color: z.string().trim().regex(/^#[0-9A-Fa-f]{6}$/).optional(),
@@ -36,8 +36,8 @@ const categoryUpdateInputSchema = z.object({
 });
 
 const transactionCreateInputSchema = z.object({
-  title: z.string().trim().min(2, "Título deve ter ao menos 2 caracteres."),
-  amount: z.number().positive("Valor precisa ser maior que zero."),
+  title: z.string().trim().min(2, "O título deve ter ao menos 2 caracteres."),
+  amount: z.number().positive("O valor precisa ser maior que zero."),
   type: z.enum(["INCOME", "EXPENSE"]),
   date: z.string().datetime("Data inválida."),
   notes: z.string().trim().max(500).optional().nullable(),
