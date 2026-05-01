@@ -127,14 +127,14 @@ export function CategoryDialog({
 
           <div className="space-y-2">
             <span className="block text-xs font-semibold text-[#374151]">Ícone</span>
-            <div className="grid grid-cols-6 gap-2">
+            <div className="grid grid-cols-8 gap-2">
               {CATEGORY_ICON_OPTIONS.map(({ id, icon: Icon }) => (
                 <button
                   key={id}
                   type="button"
                   onClick={() => setSelectedIcon(id)}
                   className={cn(
-                    "flex h-8 w-8 items-center justify-center rounded-md border border-[#d4d6da] bg-white text-[#4b5563] transition-colors hover:bg-[#f7f8fa]",
+                    "flex h-8 w-8 items-center justify-center rounded-lg border border-[#d4d6da] bg-white text-[#4b5563] transition-colors hover:bg-[#f7f8fa]",
                     selectedIcon === id && "border-brand-base ring-2 ring-brand-base/20",
                   )}
                 >
@@ -153,7 +153,7 @@ export function CategoryDialog({
                   type="button"
                   onClick={() => setSelectedColor(color)}
                   className={cn(
-                    "h-6 w-8 rounded-md border-2 border-white shadow-[0_0_0_1px_#d4d6da]",
+                    "h-6 w-8 rounded-lg border-2 border-white shadow-[0_0_0_1px_#d4d6da]",
                     selectedColor === color && "shadow-[0_0_0_2px_#ffffff,0_0_0_4px_#1F6E43]",
                   )}
                   style={{ backgroundColor: color }}

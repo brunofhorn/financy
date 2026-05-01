@@ -37,7 +37,6 @@ export const CATEGORY_ICON_OPTIONS: Array<{ id: string; icon: LucideIcon }> = [
   { id: "baggageclaim", icon: BaggageClaim },
   { id: "mailbox", icon: Mailbox },
   { id: "receipt", icon: ReceiptText },
-  { id: "receipt", icon: ReceiptText }
 ];
 
 export const CATEGORY_COLOR_OPTIONS = [
