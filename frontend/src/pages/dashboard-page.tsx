@@ -246,7 +246,7 @@ function TransactionRow({
   return (
     <div className="grid min-h-20 grid-cols-[40px_minmax(0,1fr)_auto_auto] items-center gap-4 px-6 py-4">
       <div
-        className={cn("flex h-10 w-10 items-center justify-center rounded-md", style.icon)}
+        className={cn("flex h-10 w-10 items-center justify-center rounded-lg", style.icon)}
         style={
           style.color
             ? { color: style.color, backgroundColor: style.backgroundColor }

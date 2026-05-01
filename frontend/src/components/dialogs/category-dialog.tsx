@@ -95,7 +95,7 @@ export function CategoryDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[324px] gap-4 rounded-lg border-[#e2e5e9] p-5 shadow-[0_16px_40px_rgba(17,24,39,0.18)]">
+      <DialogContent className="max-w-[448px] gap-4 rounded-lg border-[#e2e5e9] p-5 shadow-[0_16px_40px_rgba(17,24,39,0.18)]">
         <DialogHeader>
           <DialogTitle className="text-sm font-bold text-[#111827]">
             {isEditing ? "Editar categoria" : "Nova categoria"}
@@ -110,7 +110,7 @@ export function CategoryDialog({
             <Input
               placeholder="Ex. Alimentação"
               error={Boolean(form.formState.errors.name)}
-              className="h-10 rounded-md border-[#d4d6da] text-sm placeholder:text-[#9ca3af]"
+              className="h-10 rounded-lg border-[#d4d6da] text-sm placeholder:text-[#9ca3af]"
               {...form.register("name")}
             />
           </ModalField>
@@ -119,7 +119,7 @@ export function CategoryDialog({
             <Input
               placeholder="Descrição da categoria"
               error={Boolean(form.formState.errors.description)}
-              className="h-10 rounded-md border-[#d4d6da] text-sm placeholder:text-[#9ca3af]"
+              className="h-10 rounded-lg border-[#d4d6da] text-sm placeholder:text-[#9ca3af]"
               {...form.register("description")}
             />
             <span className="block text-xs text-[#6b7280]">Opcional</span>
@@ -134,11 +134,11 @@ export function CategoryDialog({
                   type="button"
                   onClick={() => setSelectedIcon(id)}
                   className={cn(
-                    "flex h-8 w-8 items-center justify-center rounded-lg border border-[#d4d6da] bg-white text-[#4b5563] transition-colors hover:bg-[#f7f8fa]",
+                    "flex h-10 w-10 items-center justify-center rounded-lg border border-[#d4d6da] bg-white text-[#4b5563] transition-colors hover:bg-[#f7f8fa]",
                     selectedIcon === id && "border-brand-base ring-2 ring-brand-base/20",
                   )}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-5 w-5" />
                 </button>
               ))}
             </div>
@@ -152,13 +152,13 @@ export function CategoryDialog({
                   key={color}
                   type="button"
                   onClick={() => setSelectedColor(color)}
-                  className="h-8 rounded-lg border p-1 transition-colors"
+                  className="h-8 rounded-lg border-2 p-1 transition-colors"
                   style={{
                     borderColor: selectedColor === color ? color : "#d1d5db",
                   }}
                 >
                   <span
-                    className="block h-full w-full rounded-sm border-4 border-white"
+                    className="block h-full w-full rounded-sm border-3 border-white"
                     style={{ backgroundColor: color }}
                   />
                   <span className="sr-only">{color}</span>
@@ -171,7 +171,7 @@ export function CategoryDialog({
 
           <Button
             type="submit"
-            className="h-10 w-full rounded-md text-sm"
+            className="h-10 w-full rounded-lg text-sm"
             disabled={mutation.isPending}
           >
             {mutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : null}

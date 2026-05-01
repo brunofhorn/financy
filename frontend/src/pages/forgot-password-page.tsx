@@ -67,13 +67,13 @@ export function ForgotPasswordPage() {
                 icon={<Mail className="h-4 w-4" />}
                 placeholder="mail@exemplo.com"
                 error={Boolean(form.formState.errors.email)}
-                className="h-12 rounded-md border-[#d4d6da] text-base placeholder:text-[#9ca3af]"
+                className="h-12 rounded-lg border-[#d4d6da] text-base placeholder:text-[#9ca3af]"
                 {...form.register("email")}
               />
             </Field>
 
             <Button
-              className="mt-6 h-12 w-full rounded-md text-base"
+              className="mt-6 h-12 w-full rounded-lg text-base"
               type="submit"
               disabled={isSubmitting}
             >
@@ -88,7 +88,7 @@ export function ForgotPasswordPage() {
             <div className="h-px flex-1 bg-[#eef0f2]" />
           </div>
 
-          <Button asChild variant="secondary" className="h-12 w-full rounded-md text-base">
+          <Button asChild variant="secondary" className="h-12 w-full rounded-lg text-base">
             <Link to="/">
               <ArrowLeft className="h-5 w-5" />
               Voltar ao login

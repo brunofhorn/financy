@@ -24,7 +24,7 @@ export function StatCard({ label, value, icon, tone = "default" }: StatCardProps
           <p className="text-sm font-medium text-gray-500">{label}</p>
           <p className="mt-2 text-2xl font-bold text-gray-900">{value}</p>
         </div>
-        <div className={cn("rounded-md p-2.5", tones[tone])}>{icon}</div>
+        <div className={cn("rounded-lg p-2.5", tones[tone])}>{icon}</div>
       </div>
     </div>
   );

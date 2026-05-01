@@ -33,7 +33,7 @@ export function ReportsPage() {
       <section className="grid gap-4 lg:grid-cols-2">
         <div className="rounded-lg border border-border bg-white p-5">
           <div className="flex items-center gap-3">
-            <div className="rounded-md bg-finance-green-light p-2 text-brand-base">
+            <div className="rounded-lg bg-finance-green-light p-2 text-brand-base">
               <BarChart3 className="h-5 w-5" />
             </div>
             <div>

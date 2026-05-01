@@ -74,7 +74,7 @@ export function RegisterPage() {
               icon={<UserRound className="h-4 w-4" />}
               placeholder="Seu nome completo"
               error={Boolean(form.formState.errors.name)}
-              className="h-12 rounded-md border-[#d4d6da] text-base placeholder:text-[#9ca3af]"
+              className="h-12 rounded-lg border-[#d4d6da] text-base placeholder:text-[#9ca3af]"
               {...form.register("name")}
             />
           </Field>
@@ -85,7 +85,7 @@ export function RegisterPage() {
               icon={<Mail className="h-4 w-4" />}
               placeholder="mail@exemplo.com"
               error={Boolean(form.formState.errors.email)}
-              className="h-12 rounded-md border-[#d4d6da] text-base placeholder:text-[#9ca3af]"
+              className="h-12 rounded-lg border-[#d4d6da] text-base placeholder:text-[#9ca3af]"
               {...form.register("email")}
             />
           </Field>
@@ -102,7 +102,7 @@ export function RegisterPage() {
                 type={showPassword ? "text" : "password"}
                 placeholder="Digite sua senha"
                 error={Boolean(form.formState.errors.password)}
-                className="h-12 rounded-md border-[#d4d6da] pr-10 text-base placeholder:text-[#9ca3af]"
+                className="h-12 rounded-lg border-[#d4d6da] pr-10 text-base placeholder:text-[#9ca3af]"
                 {...form.register("password")}
               />
               <button
@@ -126,7 +126,7 @@ export function RegisterPage() {
           {error ? <p className="text-sm text-feedback-danger">{error}</p> : null}
 
           <Button
-            className="mt-6 h-12 w-full rounded-md text-base"
+            className="mt-6 h-12 w-full rounded-lg text-base"
             type="submit"
             disabled={mutation.isPending}
           >
@@ -143,7 +143,7 @@ export function RegisterPage() {
 
           <p className="text-center text-sm text-[#4b5563]">Ja tem uma conta?</p>
 
-          <Button asChild variant="secondary" className="mt-5 h-12 w-full rounded-md text-base">
+          <Button asChild variant="secondary" className="mt-5 h-12 w-full rounded-lg text-base">
             <Link to="/">
               <LogIn className="h-5 w-5" />
               Fazer login

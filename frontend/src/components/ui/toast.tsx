@@ -49,7 +49,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             </div>
             <button
               type="button"
-              className="rounded-md p-1 text-[#6b7280] transition-colors hover:bg-[#f7f8fa] hover:text-[#111827]"
+              className="rounded-lg p-1 text-[#6b7280] transition-colors hover:bg-[#f7f8fa] hover:text-[#111827]"
               onClick={() => removeToast(toast.id)}
               aria-label="Fechar notificacao"
             >

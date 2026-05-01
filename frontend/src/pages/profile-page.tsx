@@ -47,7 +47,7 @@ export function ProfilePage() {
               icon={<UserRound className="h-4 w-4" />}
               value={name}
               onChange={(event) => setName(event.target.value)}
-              className="h-12 rounded-md border-[#d4d6da] text-base"
+              className="h-12 rounded-lg border-[#d4d6da] text-base"
             />
           </label>
 
@@ -57,19 +57,19 @@ export function ProfilePage() {
               icon={<Mail className="h-4 w-4" />}
               value={user?.email ?? ""}
               disabled
-              className="h-12 rounded-md border-[#d4d6da] bg-white text-base disabled:bg-white disabled:text-[#6b7280]"
+              className="h-12 rounded-lg border-[#d4d6da] bg-white text-base disabled:bg-white disabled:text-[#6b7280]"
             />
             <span className="block text-xs text-[#6b7280]">O e-mail não pode ser alterado</span>
           </label>
 
-          <Button type="submit" className="mt-8 h-12 w-full rounded-md text-base">
+          <Button type="submit" className="mt-8 h-12 w-full rounded-lg text-base">
             Salvar alterações
           </Button>
 
           <Button
             type="button"
             variant="secondary"
-            className="h-12 w-full rounded-md text-base"
+            className="h-12 w-full rounded-lg text-base"
             onClick={handleLogout}
           >
             <LogOut className="h-5 w-5 text-feedback-danger" />

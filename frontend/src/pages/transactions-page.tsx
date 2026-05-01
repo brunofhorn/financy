@@ -164,7 +164,7 @@ export function TransactionsPage() {
             Gerencie todas as suas transações financeiras
           </p>
         </div>
-        <Button className="h-9 rounded-md px-4" onClick={openCreateDialog}>
+        <Button className="h-9 rounded-lg px-4" onClick={openCreateDialog}>
           <Plus className="h-4 w-4" />
           Nova transação
         </Button>
@@ -178,13 +178,13 @@ export function TransactionsPage() {
               placeholder="Buscar por descrição"
               value={search}
               onChange={(event) => updateFilter(() => setSearch(event.target.value))}
-              className="h-12 rounded-md border-[#d4d6da] text-base placeholder:text-[#9ca3af]"
+              className="h-12 rounded-lg border-[#d4d6da] text-base placeholder:text-[#9ca3af]"
             />
           </FilterField>
 
           <FilterField label="Tipo">
             <Select value={type} onValueChange={(value) => updateFilter(() => setType(value))}>
-              <SelectTrigger className="h-12 rounded-md border-[#d4d6da] text-base">
+              <SelectTrigger className="h-12 rounded-lg border-[#d4d6da] text-base">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -200,7 +200,7 @@ export function TransactionsPage() {
               value={categoryId}
               onValueChange={(value) => updateFilter(() => setCategoryId(value))}
             >
-              <SelectTrigger className="h-12 rounded-md border-[#d4d6da] text-base">
+              <SelectTrigger className="h-12 rounded-lg border-[#d4d6da] text-base">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -219,7 +219,7 @@ export function TransactionsPage() {
               value={period}
               onValueChange={(value) => updateFilter(() => setPeriod(value))}
             >
-              <SelectTrigger className="h-12 rounded-md border-[#d4d6da] text-base">
+              <SelectTrigger className="h-12 rounded-lg border-[#d4d6da] text-base">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -354,7 +354,7 @@ function TransactionTableRow({
       <td className="px-6 py-4">
         <div className="flex items-center gap-4">
           <div
-            className={cn("flex h-10 w-10 items-center justify-center rounded-md", style.icon)}
+            className={cn("flex h-10 w-10 items-center justify-center rounded-lg", style.icon)}
             style={
               style.color
                 ? { color: style.color, backgroundColor: style.backgroundColor }
@@ -437,7 +437,7 @@ function ActionButton({
       title={title}
       onClick={onClick}
       disabled={disabled}
-      className="flex h-8 w-8 items-center justify-center rounded-md border border-[#d4d6da] bg-white transition-colors hover:bg-[#f7f8fa] disabled:cursor-not-allowed disabled:opacity-50"
+      className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#d4d6da] bg-white transition-colors hover:bg-[#f7f8fa] disabled:cursor-not-allowed disabled:opacity-50"
     >
       {children}
       <span className="sr-only">{title}</span>
@@ -497,7 +497,7 @@ function PaginationButton({
       disabled={disabled}
       onClick={onClick}
       className={cn(
-        "flex h-8 min-w-8 items-center justify-center rounded-md border border-[#e2e5e9] bg-white px-2 text-sm font-semibold text-[#374151] transition-colors hover:bg-[#f7f8fa] disabled:cursor-not-allowed disabled:text-[#d1d5db]",
+        "flex h-8 min-w-8 items-center justify-center rounded-lg border border-[#e2e5e9] bg-white px-2 text-sm font-semibold text-[#374151] transition-colors hover:bg-[#f7f8fa] disabled:cursor-not-allowed disabled:text-[#d1d5db]",
         active && "border-brand-base bg-brand-base text-white hover:bg-brand-base",
       )}
     >

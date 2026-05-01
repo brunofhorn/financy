@@ -150,7 +150,7 @@ export function TransactionDialog({
             <Input
               placeholder="Ex. Almoço no restaurante"
               error={Boolean(form.formState.errors.title)}
-              className="h-10 rounded-md border-[#d4d6da] text-sm placeholder:text-[#9ca3af]"
+              className="h-10 rounded-lg border-[#d4d6da] text-sm placeholder:text-[#9ca3af]"
               {...form.register("title")}
             />
           </ModalField>
@@ -191,7 +191,7 @@ export function TransactionDialog({
             render={({ field }) => (
               <ModalField label="Categoria">
                 <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className="h-10 rounded-md border-[#d4d6da] text-sm text-[#6b7280]">
+                  <SelectTrigger className="h-10 rounded-lg border-[#d4d6da] text-sm text-[#6b7280]">
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent>
@@ -211,7 +211,7 @@ export function TransactionDialog({
 
           <Button
             type="submit"
-            className="h-10 w-full rounded-md text-sm"
+            className="h-10 w-full rounded-lg text-sm"
             disabled={mutation.isPending}
           >
             {mutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
@@ -239,7 +239,7 @@ function CurrencyInput({
       placeholder="R$ 0,00"
       inputMode="numeric"
       error={error}
-      className="h-10 rounded-md border-[#d4d6da] text-sm placeholder:text-[#111827]"
+      className="h-10 rounded-lg border-[#d4d6da] text-sm placeholder:text-[#111827]"
     />
   );
 }
@@ -311,7 +311,7 @@ function DatePickerInput({
         inputMode="numeric"
         error={error}
         rightIcon={<Calendar className="h-4 w-4" />}
-        className="h-10 rounded-md border-[#d4d6da] pr-10 text-sm text-[#6b7280] placeholder:text-[#9ca3af]"
+        className="h-10 rounded-lg border-[#d4d6da] pr-10 text-sm text-[#6b7280] placeholder:text-[#9ca3af]"
         onFocus={() => setOpen(true)}
       />
       <button
@@ -326,7 +326,7 @@ function DatePickerInput({
           <div className="mb-3 flex items-center justify-between">
             <button
               type="button"
-              className="flex h-7 w-7 items-center justify-center rounded-md hover:bg-[#f7f8fa]"
+              className="flex h-7 w-7 items-center justify-center rounded-lg hover:bg-[#f7f8fa]"
               onClick={() => changeMonth(-1)}
               aria-label="Mes anterior"
             >
@@ -340,7 +340,7 @@ function DatePickerInput({
             </span>
             <button
               type="button"
-              className="flex h-7 w-7 items-center justify-center rounded-md hover:bg-[#f7f8fa]"
+              className="flex h-7 w-7 items-center justify-center rounded-lg hover:bg-[#f7f8fa]"
               onClick={() => changeMonth(1)}
               aria-label="Proximo mes"
             >
@@ -364,7 +364,7 @@ function DatePickerInput({
                   key={day.toISOString()}
                   type="button"
                   className={cn(
-                    "flex h-8 items-center justify-center rounded-md text-xs transition-colors hover:bg-[#f7f8fa]",
+                    "flex h-8 items-center justify-center rounded-lg text-xs transition-colors hover:bg-[#f7f8fa]",
                     !isCurrentMonth && "text-[#c2c7cf]",
                     isSelected && "bg-brand-base font-semibold text-white hover:bg-brand-base",
                   )}
@@ -400,7 +400,7 @@ function TypeButton({
       type="button"
       onClick={onClick}
       className={cn(
-        "flex h-10 items-center justify-center gap-2 rounded-md border text-sm font-semibold transition-colors",
+        "flex h-10 items-center justify-center gap-2 rounded-lg border text-sm font-semibold transition-colors",
         active
           ? isExpense
             ? "border-feedback-danger bg-white text-feedback-danger"

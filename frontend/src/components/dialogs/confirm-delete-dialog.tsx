@@ -49,7 +49,7 @@ export function ConfirmDeleteDialog({
         </DialogHeader>
 
         {itemName ? (
-          <div className="rounded-md border border-[#e2e5e9] bg-[#f7f8fa] px-3 py-2 text-sm font-semibold text-[#111827]">
+          <div className="rounded-lg border border-[#e2e5e9] bg-[#f7f8fa] px-3 py-2 text-sm font-semibold text-[#111827]">
             {itemName}
           </div>
         ) : null}
@@ -58,7 +58,7 @@ export function ConfirmDeleteDialog({
           <Button
             type="button"
             variant="secondary"
-            className="h-10 rounded-md"
+            className="h-10 rounded-lg"
             onClick={() => onOpenChange(false)}
             disabled={isDeleting}
           >
@@ -67,7 +67,7 @@ export function ConfirmDeleteDialog({
           <Button
             type="button"
             variant="destructive"
-            className="h-10 rounded-md"
+            className="h-10 rounded-lg"
             onClick={handleConfirm}
             disabled={isDeleting}
           >

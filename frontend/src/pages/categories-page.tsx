@@ -72,7 +72,7 @@ export function CategoriesPage() {
             Organize suas transações por categorias
           </p>
         </div>
-        <Button className="h-9 rounded-md px-4" onClick={openCreateDialog}>
+        <Button className="h-9 rounded-lg px-4" onClick={openCreateDialog}>
           <Plus className="h-4 w-4" />
           Nova categoria
         </Button>
@@ -115,7 +115,7 @@ export function CategoriesPage() {
               >
                 <div className="flex items-start justify-between gap-4">
                   <div
-                    className="flex h-10 w-10 items-center justify-center rounded-md"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg"
                     style={{
                       backgroundColor: row.appearance.backgroundColor,
                       color: row.appearance.color,
@@ -244,7 +244,7 @@ function ActionButton({
       title={title}
       onClick={onClick}
       disabled={disabled}
-      className="flex h-8 w-8 items-center justify-center rounded-md border border-[#d4d6da] bg-white transition-colors hover:bg-[#f7f8fa] disabled:cursor-not-allowed disabled:opacity-50"
+      className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#d4d6da] bg-white transition-colors hover:bg-[#f7f8fa] disabled:cursor-not-allowed disabled:opacity-50"
     >
       {children}
       <span className="sr-only">{title}</span>
